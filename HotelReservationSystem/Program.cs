@@ -1,3 +1,6 @@
+using HotelReservationSystem.Models.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace HotelReservationSystem
 {
     public class Program
@@ -8,6 +11,14 @@ namespace HotelReservationSystem
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            //Add DbContext
+            builder.Services.AddDbContext<ModelContext>(
+                option=>option.UseOracle(builder.Configuration.GetConnectionString("DefaultConnection"))
+                );
+            //
+
+
 
             var app = builder.Build();
 
