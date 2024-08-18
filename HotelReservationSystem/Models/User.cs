@@ -4,12 +4,11 @@ namespace HotelReservationSystem.Models
 {
     public class User
     {
-
+        
         public int Id { get; set; }
-        public string Name { get; set; } 
+        public string Name { get; set; }
         public string? ImagePath { get; set; } // Form - path "D:/Ahmed"()
-        [NotMapped]
-        public IFormFile? ImageFile { get; set; }
+        public string Password { get; set; }
         public string Email { get; set; }
         public int phone { get; set; }
         public string Role { get; set; } // Admin - User

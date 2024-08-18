@@ -13,10 +13,15 @@ namespace HotelReservationSystem
             builder.Services.AddControllersWithViews();
 
             //Add DbContext
-            builder.Services.AddDbContext<ModelContext>(
-                option=>option.UseOracle(builder.Configuration.GetConnectionString("DefaultConnection"))
-                );
-            //
+            builder.Services.AddDbContext<ModelContext>(option => option.UseOracle(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+            //Add Session
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30); // Set session timeout
+                options.Cookie.HttpOnly = true; // Make the session cookie accessible only to the server
+                options.Cookie.IsEssential = true; // Make the session cookie essential for GDPR
+            });
 
 
 
@@ -35,7 +40,11 @@ namespace HotelReservationSystem
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
+
+            // Add session middleware
+            app.UseSession();
 
             app.MapControllerRoute(
                 name: "default",
