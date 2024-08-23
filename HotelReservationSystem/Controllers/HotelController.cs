@@ -1,4 +1,4 @@
-﻿using HotelReservationSystem.Models;
+﻿ using HotelReservationSystem.Models;
 using HotelReservationSystem.Models.Data;
 using HotelReservationSystem.ViewModel;
 using Microsoft.AspNetCore.Hosting;
@@ -30,7 +30,7 @@ namespace HotelReservationSystem.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(HotelsVM model)
+        public IActionResult Create(HotelVM model)
         {
             if (ModelState.IsValid)
             {
@@ -44,7 +44,7 @@ namespace HotelReservationSystem.Controllers
                     Loc=model.Loc,
                     Name=model.Name,
                     Desc=model.Desc,
-                    Imagepath=SaveImage(model.ImageFile)
+                    Imagepath=SaveImage(model.ImagFile)
                 };
                 //Save image !!
 
@@ -70,34 +70,70 @@ namespace HotelReservationSystem.Controllers
         {
             var hotel = _context.hotels.FirstOrDefault(x => x.Id == id);
             //View Model
-            var model = new HotelsVM()
+            var model = new HotelVM()
             {
-                imagePath = hotel.Imagepath,
+                Imagepath = hotel.Imagepath,
                 Desc = hotel.Desc,
                 Loc = hotel.Loc,
                 Name = hotel.Name,
-                id = id,
+                Id = id,
             };
             return View(model);
         }
         [HttpPost]
-        public IActionResult Update(HotelsVM hotel)
+        public IActionResult Update(HotelVM hotel)
         {
 
-            var DBHotel = _context.hotels.FirstOrDefault(x => x.Id == hotel.id);
+            var DBHotel = _context.hotels.FirstOrDefault(x => x.Id == hotel.Id);
             DBHotel.Name = hotel.Name;
             DBHotel.Loc = hotel.Loc;
             DBHotel.Desc = hotel.Desc;
             //file image?
-            if (hotel.ImageFile != null)
+            if (hotel.ImagFile != null)
             {
-                DBHotel.Imagepath = SaveImage(hotel.ImageFile);
+                DBHotel.Imagepath = SaveImage(hotel.ImagFile);
             }
             _context.Update(DBHotel);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet]
+        public IActionResult Details(int id)
+        {
+            //data about hotel
+            //Rating
+            //drop list - int rate - int hotel id
+            //---------------------------------------------
+            var rate = new RatingVM()
+            {
+                HotelId = id
+            };
+            var model = new HotelDetailsVM()
+            {
+                hotel = _context.hotels.Include(x=>x.rooms).FirstOrDefault(x => x.Id == id),
+                ratingVM=rate
+                
+            };
+
+            return View(model);
+        }
+
+        public IActionResult AddRating(RatingVM ratingVM)
+        {
+            //hotel 
+            var hotel=_context.hotels.FirstOrDefault(x=>x.Id== ratingVM.HotelId);
+            //count++
+            hotel.Count++;
+            //rating(average rating)
+            int newRating = (hotel.Rating * (hotel.Count - 1) + ratingVM.Rating) / hotel.Count;
+            hotel.Rating = newRating;
+            // save
+            _context.Update(hotel);
+            _context.SaveChanges();
+           
+            return RedirectToAction("Details",controllerName:"Hotel",routeValues: ratingVM.HotelId);
+        }
 
         private string SaveImage(IFormFile file)
         {

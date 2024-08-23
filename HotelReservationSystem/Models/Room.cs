@@ -11,7 +11,7 @@ namespace HotelReservationSystem.Models
         public int roomNumber  { get; set; }
 
         public string RoomType { get; set; }
-        public int PriceByNight { get; set; }
+        public decimal PriceByNight { get; set; }
         public string Desc { get; set; }
         [NotMapped]
         public  IFormFile? ImageFile { get; set; }
@@ -20,6 +20,7 @@ namespace HotelReservationSystem.Models
        [ForeignKey("hotel")]
         public int HotelId { get; set; }
 
+        public DateTime CreatedAt { get; set; }
     
         public Hotel hotel { get; set; }
         public List<Reservation> reservations { get; set; }

@@ -13,6 +13,9 @@ namespace HotelReservationSystem.Models
         public int phone { get; set; }
         public string Role { get; set; } // Admin - User
         public DateTime CreatedAT { get; set; } = DateTime.Now;
+        public int CardId { get; set; } 
+        public int CardCvv { get; set; }
+        public decimal balance {  get; set; }
 
         public List<Reservation> reservations { get; set; }
         public List<Resident> Residents { get; set; }

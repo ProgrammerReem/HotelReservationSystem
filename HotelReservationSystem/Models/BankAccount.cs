@@ -11,7 +11,7 @@ namespace HotelReservationSystem.Models
         public int UserId { get; set; }
         public int CardId { get; set; } // 212 2233 
         public int Cvv { get; set; }
-        public int Balance { get; set; } // 10 k$
+        public decimal Balance { get; set; } // 10 k$
 
 
 

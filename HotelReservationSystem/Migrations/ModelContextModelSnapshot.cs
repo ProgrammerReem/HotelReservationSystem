@@ -30,8 +30,8 @@ namespace HotelReservationSystem.Migrations
 
                     OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Balance")
-                        .HasColumnType("NUMBER(10)");
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("DECIMAL(18, 2)");
 
                     b.Property<int>("CardId")
                         .HasColumnType("NUMBER(10)");
@@ -49,6 +49,38 @@ namespace HotelReservationSystem.Migrations
                     b.ToTable("bankAccounts");
                 });
 
+            modelBuilder.Entity("HotelReservationSystem.Models.ContactUs", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("NUMBER(10)");
+
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TIMESTAMP(7)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("contactUs");
+                });
+
             modelBuilder.Entity("HotelReservationSystem.Models.Hotel", b =>
                 {
                     b.Property<int>("Id")
@@ -56,6 +88,9 @@ namespace HotelReservationSystem.Migrations
                         .HasColumnType("NUMBER(10)");
 
                     OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Count")
+                        .HasColumnType("NUMBER(10)");
 
                     b.Property<string>("Desc")
                         .HasColumnType("NVARCHAR2(2000)");
@@ -128,9 +163,8 @@ namespace HotelReservationSystem.Migrations
                     b.Property<int>("RoomId")
                         .HasColumnType("NUMBER(10)");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR2(2000)");
+                    b.Property<bool>("Status")
+                        .HasColumnType("NUMBER(1)");
 
                     b.Property<int>("UserID")
                         .HasColumnType("NUMBER(10)");
@@ -181,6 +215,9 @@ namespace HotelReservationSystem.Migrations
 
                     OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TIMESTAMP(7)");
+
                     b.Property<string>("Desc")
                         .IsRequired()
                         .HasColumnType("NVARCHAR2(2000)");
@@ -191,8 +228,8 @@ namespace HotelReservationSystem.Migrations
                     b.Property<string>("ImagePath")
                         .HasColumnType("NVARCHAR2(2000)");
 
-                    b.Property<int>("PriceByNight")
-                        .HasColumnType("NUMBER(10)");
+                    b.Property<decimal>("PriceByNight")
+                        .HasColumnType("DECIMAL(18, 2)");
 
                     b.Property<string>("RoomType")
                         .IsRequired()
@@ -216,11 +253,17 @@ namespace HotelReservationSystem.Migrations
 
                     OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("hotelId")
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TIMESTAMP(7)");
+
+                    b.Property<int?>("HotelId")
                         .HasColumnType("NUMBER(10)");
 
                     b.Property<int>("roomId")
                         .HasColumnType("NUMBER(10)");
+
+                    b.Property<bool>("status")
+                        .HasColumnType("NUMBER(1)");
 
                     b.Property<string>("text")
                         .IsRequired()
@@ -231,7 +274,7 @@ namespace HotelReservationSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("hotelId");
+                    b.HasIndex("HotelId");
 
                     b.HasIndex("roomId");
 
@@ -247,6 +290,12 @@ namespace HotelReservationSystem.Migrations
                         .HasColumnType("NUMBER(10)");
 
                     OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CardCvv")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.Property<int>("CardId")
+                        .HasColumnType("NUMBER(10)");
 
                     b.Property<DateTime>("CreatedAT")
                         .HasColumnType("TIMESTAMP(7)");
@@ -270,6 +319,9 @@ namespace HotelReservationSystem.Migrations
                         .IsRequired()
                         .HasColumnType("NVARCHAR2(2000)");
 
+                    b.Property<decimal>("balance")
+                        .HasColumnType("DECIMAL(18, 2)");
+
                     b.Property<int>("phone")
                         .HasColumnType("NUMBER(10)");
 
@@ -289,8 +341,8 @@ namespace HotelReservationSystem.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TIMESTAMP(7)");
 
-                    b.Property<int>("Price")
-                        .HasColumnType("NUMBER(10)");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("DECIMAL(18, 2)");
 
                     b.Property<int>("RoomId")
                         .HasColumnType("NUMBER(10)");
@@ -369,11 +421,9 @@ namespace HotelReservationSystem.Migrations
 
             modelBuilder.Entity("HotelReservationSystem.Models.Testimonial", b =>
                 {
-                    b.HasOne("HotelReservationSystem.Models.Hotel", "hotel")
+                    b.HasOne("HotelReservationSystem.Models.Hotel", null)
                         .WithMany("testimonials")
-                        .HasForeignKey("hotelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("HotelId");
 
                     b.HasOne("HotelReservationSystem.Models.Room", "room")
                         .WithMany("testimonials")
@@ -386,8 +436,6 @@ namespace HotelReservationSystem.Migrations
                         .HasForeignKey("userId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("hotel");
 
                     b.Navigation("room");
 

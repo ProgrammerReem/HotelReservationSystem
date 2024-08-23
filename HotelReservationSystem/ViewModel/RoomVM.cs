@@ -9,8 +9,8 @@ namespace HotelReservationSystem.ViewModel
         public int roomNumber { get; set; }
         [Required]
         public string RoomType { get; set; }
-        public  List<string>? RoomTypes { get; set; } = new List<string>() { "Single", "Double", "Suite" };
-        public int PriceByNight { get; set; }
+        public  List<string>? RoomTypes { get; set; } = new List<string>() { "Single", "Suite" ,"meeting","Party" };
+        public decimal PriceByNight { get; set; }
         [Required]
         public string Desc { get; set; }
         public IFormFile? ImageFile { get; set; }

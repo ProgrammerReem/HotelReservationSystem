@@ -18,11 +18,12 @@ namespace HotelReservationSystem.Models.Data
         public DbSet<BankAccount> bankAccounts { get; set; }
         public DbSet<Hotel> hotels { get; set; }
         public DbSet<PageContent> pageContent { get; set; }
-        public DbSet<Reservation> reservations { get; set; }
+        public DbSet<Reservation> reservations { get; set; }  
         public DbSet<Resident> residents { get; set; }
         public DbSet<Room> room { get; set; }
         public DbSet<Testimonial> testimonials { get; set;}
         public DbSet<UserTransactions> userTransactions { get; set; }
+        public DbSet<ContactUs> contactUs { get; set; }
 
     }
 }

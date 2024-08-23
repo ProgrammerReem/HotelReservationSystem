@@ -2,6 +2,7 @@
 using HotelReservationSystem.Models.Data;
 using HotelReservationSystem.ViewModel;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HotelReservationSystem.Controllers
 {
@@ -34,6 +35,7 @@ namespace HotelReservationSystem.Controllers
                     Name = userVM.Name,
                     Password = userVM.Password,
                     phone = userVM.phone,
+                    balance=1000
                 };
                 //role - image path
                 if (userVM.ImageFile != null)
@@ -67,30 +69,77 @@ namespace HotelReservationSystem.Controllers
             //email => vm و pass=>vm
 
 
-       
-
-
-
             var user = _context.users.FirstOrDefault(x => x.Email == userVM.Email && x.Password == userVM.Password);
             if (user != null)
             {
                 //login
                 HttpContext.Session.SetString("userId", user.Id.ToString());
-                HttpContext.Session.SetString("userName", user.Name);
-                return RedirectToAction("TestSession");
+
+                return RedirectToAction("index", controllerName: "Home");
             }
             ViewBag.error = "invalid ";
             return View();
         }
-        public IActionResult TestSession()
+
+        [HttpGet]
+        public IActionResult Edit()
         {
-            var x = HttpContext.Session.GetString("userId");
-            var cx = HttpContext.Session.GetString("userName");
-            var cxc = HttpContext.Session.GetString("userName2");
-            return View();
+            var user = GetUser();
+            if(user == null)
+            {
+                return RedirectToAction("Login");
+            }
+            //
+            var model = new UserVM()
+            {
+                Id=user.Id,
+                CardID=user.CardId,
+                CardCvv=user.CardCvv,
+                Email=user.Email,
+                Name=user.Name,
+                phone=user.phone,
+                ImagePath=user.ImagePath,   
+            };
+            return View(model);
+        }
+        [HttpPost]
+        public IActionResult Edit(UserVM userVM)
+        {
+            var user = _context.users.FirstOrDefault(x => x.Id == userVM.Id);
+
+            user.phone = userVM.phone;
+            user.Name = userVM.Name;
+            user.CardCvv = userVM.CardCvv;
+            user.CardId = userVM.CardID;
+            user.Email = userVM.Email;
+
+            //password - image
+            if (userVM.Password != null)
+            {
+                user.Password=userVM.Password;
+            }
+            if (userVM.ImageFile != null)
+            {
+                user.ImagePath = SaveImage(userVM.ImageFile);
+            }
+            _context.Update(user);
+            _context.SaveChanges();
+            return RedirectToAction("index",controllerName:"Home");
         }
 
-
+        private User GetUser()
+        {
+            var userId = HttpContext.Session.GetString("userId");
+            if (userId == null)
+            {
+                return null;
+            }
+            var user = _context.users.FirstOrDefault(x => x.Id == int.Parse(userId));
+            if (user == null) {
+                return null;
+            }
+            return user;
+        }
 
         private string SaveImage(IFormFile file)
         {

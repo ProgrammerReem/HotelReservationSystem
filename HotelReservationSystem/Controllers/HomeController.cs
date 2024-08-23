@@ -1,4 +1,6 @@
 ﻿using HotelReservationSystem.Models;
+using HotelReservationSystem.Models.Data;
+using HotelReservationSystem.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -6,27 +8,27 @@ namespace HotelReservationSystem.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ModelContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController( ModelContext context)
         {
-            _logger = logger;
+          
+            _context = context;
         }
-
+       
         public IActionResult Index()
         {
-            return View();
+            var conatcUs = new ContactUsVM();
+
+
+            var model = new MainPageVM()
+            {
+                hotels=_context.hotels.ToList(),
+                contactUs = conatcUs
+            };
+            return View(model);
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+      
     }
 }

@@ -16,6 +16,8 @@ namespace HotelReservationSystem.Models
         public string Loc { get; set; }
         public int Rating { get; set; }
 
+        public int Count { get; set; }
+
         public List<Room> rooms { get; set; }
         public List<Testimonial> testimonials { get; set; }
 

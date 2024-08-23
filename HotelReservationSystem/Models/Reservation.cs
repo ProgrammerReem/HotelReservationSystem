@@ -13,7 +13,7 @@ namespace HotelReservationSystem.Models
         [ForeignKey(nameof(room))]
         public int RoomId { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
-        public string Status { get; set; }
+        public bool Status { get; set; }
 
         public DateTime CheckIn { get; set; }
         public DateTime CheckOut { get; set; }

@@ -8,7 +8,7 @@
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-        public int Price { get; set; }
+        public decimal Price { get; set; }
 
         public int RoomId { get; set; }
 

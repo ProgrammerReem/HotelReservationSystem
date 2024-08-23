@@ -1,21 +1,27 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace HotelReservationSystem.ViewModel
+namespace HotelReservationSystem.Models
 {
-
-    public class HotelsVM
+    public class HotelVM
     {
-        public int id { get; set; } 
-        [Required]
+        //id -  name -   image -            desc - list<Room> - loc - rating 
+        //int   string  (IFormFile-string) string    int       string  int
+        public int Id { get; set; }
         public string Name { get; set; }
-
-        public IFormFile? ImageFile { get; set; }
-        public string? imagePath { get; set; }
+        [NotMapped]
+        public IFormFile? ImagFile { get; set; }
+        public string? Imagepath { get; set; }
         public string? Desc { get; set; }
-        [Required]
 
         public string Loc { get; set; }
-      
+        public int Rating { get; set; }
+
+        public int Count { get; set; }
+
+        public List<Room> rooms { get; set; }
+        public List<Testimonial> testimonials { get; set; }
+
 
     }
+
 }
