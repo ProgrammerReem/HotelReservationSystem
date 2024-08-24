@@ -1,0 +1,66 @@
+﻿@model GetAllRoomsVM
+@{
+    ViewData["Title"] = "GetAll";
+    Layout = "_WebSiteLayout";
+
+}
+<br />
+<br />
+<br />
+<br />
+<br />
+<h1>All Rooms</h1>
+<br />
+
+<!--Search!-->
+<form method="post" asp-action="GetAll">
+    <input placeholder="Search.."  asp-for="search" />
+    <br />
+    <label>From</label>
+    <input type="date" asp-for="From"/>
+    <br />
+    <label>To</label>
+    <input type="date" asp-for="To" />
+    <button class="btn btn-primary" type="submit">Search</button>
+</form>
+
+
+<!-- Portfolio Grid-->
+<section class="page-section bg-light" id="portfolio">
+    <div class="container">
+       
+        <div class="row">
+
+            @* ForLoop From Here *@
+            @{
+                foreach (var item in Model.Rooms)
+                {
+
+                    <div class="col-lg-4 col-sm-6 mb-4">
+                        <!-- Portfolio item 1-->
+                        <div class="portfolio-item">
+                            <a class="portfolio-link" data-bs-toggle="modal" href="">
+
+                               
+                                <img class="img-fluid" src="~/@item.ImagePath" alt="..." />
+                            </a>
+                            <div class="portfolio-caption">
+                                <a asp-action="Details" asp-controller="room" asp-route-id="@item.id" style="text-decoration: none;">
+                                    <div class="portfolio-caption-heading">Room Number:  @item.roomNumber</div>
+                                    <div class="portfolio-caption-heading">Hotel Name : @item.hotel.Name</div>
+                                    <div class="portfolio-caption-subheading text-muted">Price For Night : $@item.PriceByNight</div>
+
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+
+
+
+
+        </div>
+    </div>
+</section>

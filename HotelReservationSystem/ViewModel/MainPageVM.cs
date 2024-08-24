@@ -7,6 +7,10 @@ namespace HotelReservationSystem.ViewModel
         //hotel - testimonials - ContactUs
         public List<Hotel> hotels {  get; set; }
         public ContactUsVM contactUs { get; set; }
+        //testimonial
+        //page content
+        public List<Testimonial> testimonials { get; set; } 
+        public PageContent pageContent { get; set; }
     }
     public class ContactUsVM
     {

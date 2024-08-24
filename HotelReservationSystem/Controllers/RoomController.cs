@@ -115,7 +115,7 @@ namespace HotelReservationSystem.Controllers
             return RedirectToAction("index");
         }
 
-        public IActionResult Details(int id)
+        public IActionResult Details(int id , string? viewBagValue=null)
         {
             var room = _context.room.Include(x=>x.testimonials).ThenInclude(x=>x.user).FirstOrDefault(x => x.id == id);
             List<Testimonial> tt = new List<Testimonial>();
@@ -143,6 +143,11 @@ namespace HotelReservationSystem.Controllers
                 testimonialsVM=TestVM
                 
             };
+            if(viewBagValue != null)
+            {
+ ViewBag.CardError = "CardId or Card Cvv is invalid";
+
+            }
             return View(model);
         }
         [HttpPost]
@@ -154,6 +159,13 @@ namespace HotelReservationSystem.Controllers
             if (user == null)
             {
                 return RedirectToAction("Login", controllerName: "Account");
+            }
+            //card handle
+            if(user.CardId!=resveration.CardId || user.CardCvv != resveration.CardCvv)
+            {
+               
+               
+                return RedirectToAction("Details",new {id=resveration.roomid , viewBagValue="ff" });
             }
             //valid hisory
             //min => 1-1-1
@@ -204,6 +216,35 @@ namespace HotelReservationSystem.Controllers
 
 
         }
+
+
+        public IActionResult GetAll(GetAllRoomsVM getAll)
+        {
+            //querable vs Ienumtable
+            var rooms = _context.room.Include(x => x.hotel).ToList();
+            //rooms
+            //search
+            if (!string.IsNullOrWhiteSpace(getAll.search))
+            {
+                //r==
+                rooms = rooms.Where(x => x.hotel.Name.Contains(getAll.search) ).ToList();
+            }
+            //from - to
+            if(getAll.From != DateTime.MinValue &&getAll.To != DateTime.MinValue)
+            {
+                rooms=rooms.Where(x=>x.CreatedAt>=getAll.From && x.CreatedAt<=getAll.To).ToList();
+            }
+            var x = rooms.ToList();
+            var model = new GetAllRoomsVM()
+            {
+                Rooms=x
+            };
+            
+            return View(model);
+        }
+
+
+
         private User GetUser()
         {
             var userId = HttpContext.Session.GetString("userId");

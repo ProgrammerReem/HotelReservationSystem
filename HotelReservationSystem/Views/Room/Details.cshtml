@@ -1,7 +1,7 @@
 ﻿@model RoomDetailsVM
 <!DOCTYPE html>
 @{
-   // Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+    // Layout = "~/Views/Shared/_CustomerLayout.cshtml";
     Layout = "~/Views/Shared/_WebSiteLayout.cshtml";
 }
 <html lang="en">
@@ -39,33 +39,47 @@
                             <!-- Post meta content-->
                             <div class="text-muted fst-italic mb-2">Room Description : @Model.room.RoomType</div>
                             <div class="text-muted fst-italic mb-2">Price By Night : @Model.room.PriceByNight</div>
+                            <div class="text-muted fst-italic mb-2"> Room Description: @Model.room.Desc</div>
 
                         </header>
                         <!-- Preview image figure-->
                         <figure class="mb-4"><img class="img-fluid rounded" src="~/@Model.room.ImagePath" alt="..." /></figure>
                         <!--Form For enroll-->
                         <form asp-action="Enroll" asp-controller="Room" method="post">
+                            @{
+                                if (ViewBag.CardError != null)
+                                {
+                                    <p style="color:red;">
+                                        @ViewBag.CardError
+                                    </p>
+                                }
+                            }
+
+                            <br />
                             <input hidden asp-for="resveration.roomid" />
                             <label for="checkout-date">Select Checkout Date:</label>
                             <input type="date" asp-for="resveration.checkOut" required>
 
                             <label for="checkin-date">Select CheckIn Date:</label>
                             <input type="date" asp-for="resveration.checkIn" required>
-
+                            <br />
+                            <label for="CardId">Card Id</label>
+                            <input asp-for="resveration.CardId" required />
+                            <br />
+                            <label for="CardCVV">Card CVV</label>
+                            <input asp-for="resveration.CardCvv" required />
+                            <br />
                             <button type="submit" class="btn btn-success">Enroll</button>
                         </form>
 
 
-                        <!-- Post content-->
-                        <section class="mb-5">
-                            <p class="fs-5 mb-4"> Room Description: @Model.room.Desc </p>
-                        </section>
+
                     </article>
 
                     <!-- Testimonial section-->
                     <section>
                         <form method="post" asp-controller="Admin" asp-action="AddTestimonial">
-                            <input hidden asp-for="testimonialsVM.RoomId"/>
+                            <input hidden asp-for="testimonialsVM.RoomId" />
                             <div class="card bg-light">
                                 <div class="card-body">
                                     <!-- Comment form-->

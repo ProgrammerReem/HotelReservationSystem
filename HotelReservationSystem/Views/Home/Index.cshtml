@@ -1,55 +1,82 @@
-﻿@model MainPageVM
-@{
+﻿@{
     ViewData["Title"] = "Home Page";
-    Layout = "_WebsiteLayout";
+    Layout = "_WebSiteLayout";
 }
-
+@model MainPageVM
 <!-- Masthead-->
 <header class="masthead">
     <div class="container">
-        <div class="masthead-subheading">Welcome To Our Studio!</div>
-        <div class="masthead-heading text-uppercase">It's Nice To Meet You</div>
-        <a class="btn btn-primary btn-xl text-uppercase" href="#services">Tell Me More</a>
+
+        <div class="masthead-subheading">@Model.pageContent.Title</div>
+        <div class="masthead-heading text-uppercase">@Model.pageContent.Text</div>
+
     </div>
 </header>
+
+
+
 
 <!-- Portfolio Grid-->
 <section class="page-section bg-light" id="portfolio">
     <div class="container">
         <div class="text-center">
-            <h2 class="section-heading text-uppercase">Portfolio</h2>
-            <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+            <h2 class="section-heading text-uppercase">Hotels</h2>
         </div>
         <div class="row">
-            @{
-                if (Model.hotels.Count > 0)
-                {
-                    foreach (var item in Model.hotels)
-                    {
-                        <div class="col-lg-4 col-sm-6 mb-4">
-                            <input asp-for="@item.Id" hidden />
-                            <div class="portfolio-item">
-                                <a class="portfolio-link" data-bs-toggle="modal">
-                                    <div class="portfolio-hover">
-                                        <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
-                                    </div>
-                                    <img class="img-fluid" src="~/@item.Imagepath" alt="..." />
-                                </a>
-                                <div class="portfolio-caption">
-                                    <a asp-action="Details" asp-controller="Hotel" asp-route-id="@item.Id">
-                                        <div class="portfolio-caption-heading">@item.Name</div>
-                                        <div class="portfolio-caption-subheading text-muted">@item.Loc</div>
-                                    </a>
 
+            @* ForLoop From Here *@
+            @{
+                foreach (var item in Model.hotels)
+                {
+
+                    <div class="col-lg-4 col-sm-6 mb-4">
+                        <!-- Portfolio item 1-->
+                        <div class="portfolio-item">
+                            <a class="portfolio-link" data-bs-toggle="modal" href="">
+
+                                <div class="portfolio-hover">
+                                    <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
                                 </div>
+                                <img class="img-fluid" src="~/@item.Imagepath" alt="..." />
+                            </a>
+                            <div class="portfolio-caption">
+                                <a asp-action="Details" asp-controller="Hotel" asp-route-id="@item.Id">
+                                    <div class="portfolio-caption-heading">@item.Name</div>
+
+                                </a>
+                                <div class="portfolio-caption-subheading text-muted">@item.Loc</div>
                             </div>
                         </div>
-                    }
+                    </div>
                 }
             }
 
 
+
+
+
         </div>
+    </div>
+</section>
+<!-- About Us -->
+<section class="page-section" id="about">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="section-heading text-uppercase">About</h2>
+        </div>
+        <ul class="timeline">
+            <li>
+                <div class="timeline-image"><img class="rounded-circle img-fluid" src="~/@Model.pageContent.AboutUsImagePath" alt="..." /></div>
+                <div class="timeline-panel">
+                    <div class="timeline-heading">
+
+                        <h4 class="subheading">@Model.pageContent.AboutUsTitle</h4>
+                    </div>
+                    <div class="timeline-body"><p class="text-muted">@Model.pageContent.AboutUs</p></div>
+                </div>
+            </li>
+
+        </ul>
     </div>
 </section>
 
@@ -57,65 +84,35 @@
 <section class="page-section bg-light" id="team">
     <div class="container">
         <div class="text-center">
-            <h2 class="section-heading text-uppercase">Our Amazing Team</h2>
-            <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+            <h2 class="section-heading text-uppercase"> --Reservation-- </h2>
         </div>
         <div class="row">
-            <div class="col-lg-4">
-                <div class="team-member">
-                    <img class="mx-auto rounded-circle" src="~/WebSiteLayout/assets/img/team/1.jpg" alt="..." />
-                    <h4>Parveen Anand</h4>
-                    <p class="text-muted">Lead Designer</p>
-                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Parveen Anand Twitter Profile"><i class="fab fa-twitter"></i></a>
-                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Parveen Anand Facebook Profile"><i class="fab fa-facebook-f"></i></a>
-                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Parveen Anand LinkedIn Profile"><i class="fab fa-linkedin-in"></i></a>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="team-member">
-                    <img class="mx-auto rounded-circle" src="~/WebSiteLayout/assets/img/team/2.jpg" alt="..." />
-                    <h4>Diana Petersen</h4>
-                    <p class="text-muted">Lead Marketer</p>
-                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Diana Petersen Twitter Profile"><i class="fab fa-twitter"></i></a>
-                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Diana Petersen Facebook Profile"><i class="fab fa-facebook-f"></i></a>
-                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Diana Petersen LinkedIn Profile"><i class="fab fa-linkedin-in"></i></a>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="team-member">
-                    <img class="mx-auto rounded-circle" src="~/WebSiteLayout/assets/img/team/3.jpg" alt="..." />
-                    <h4>Larry Parker</h4>
-                    <p class="text-muted">Lead Developer</p>
-                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Larry Parker Twitter Profile"><i class="fab fa-twitter"></i></a>
-                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Larry Parker Facebook Profile"><i class="fab fa-facebook-f"></i></a>
-                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Larry Parker LinkedIn Profile"><i class="fab fa-linkedin-in"></i></a>
-                </div>
-            </div>
+            @{
+                foreach (var item in Model.testimonials)
+                {
+
+                    <div class="col-lg-4">
+                        <div class="team-member">
+                            <img class="mx-auto rounded-circle" src="~/@item.user.ImagePath" alt="..." />
+                            <h4>@item.user.Name</h4>
+                            <p class="text-muted">Hotel Name : @item.room.hotel.Name</p>
+                            <p>Room Number : @item.room.roomNumber</p>
+                            <p>@item.text</p>
+
+                        </div>
+                    </div>
+                }
+            }
+
+
+
+
         </div>
-        <div class="row">
-            <div class="col-lg-8 mx-auto text-center"><p class="large text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut eaque, laboriosam veritatis, quos non quis ad perspiciatis, totam corporis ea, alias ut unde.</p></div>
-        </div>
+
     </div>
 </section>
-<!-- Clients-->
-<div class="py-5">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-md-3 col-sm-6 my-3">
-                <a href="#!"><img class="img-fluid img-brand d-block mx-auto" src="~/WebSiteLayout/assets/img/logos/microsoft.svg" alt="..." aria-label="Microsoft Logo" /></a>
-            </div>
-            <div class="col-md-3 col-sm-6 my-3">
-                <a href="#!"><img class="img-fluid img-brand d-block mx-auto" src="~/WebSiteLayout/assets/img/logos/google.svg" alt="..." aria-label="Google Logo" /></a>
-            </div>
-            <div class="col-md-3 col-sm-6 my-3">
-                <a href="#!"><img class="img-fluid img-brand d-block mx-auto" src="~/WebSiteLayout/assets/img/logos/facebook.svg" alt="..." aria-label="Facebook Logo" /></a>
-            </div>
-            <div class="col-md-3 col-sm-6 my-3">
-                <a href="#!"><img class="img-fluid img-brand d-block mx-auto" src="~/WebSiteLayout/assets/img/logos/ibm.svg" alt="..." aria-label="IBM Logo" /></a>
-            </div>
-        </div>
-    </div>
-</div>
+
+
 <!-- Contact-->
 <section class="page-section" id="contact">
     <div class="container">
@@ -130,7 +127,6 @@
         <!-- To make this form functional, sign up at-->
         <!-- https://startbootstrap.com/solution/contact-forms-->
         <!-- to get an API token!-->
-
         <form id="contactForm" method="post" asp-controller="Admin" asp-action="ContactUs">
             <div class="row align-items-stretch mb-5">
                 <div class="col-md-6">
@@ -179,8 +175,5 @@
             <!-- Submit Button-->
             <div class="text-center"><button class="btn btn-primary btn-xl text-uppercase " id="submitButton" type="submit">Send Message</button></div>
         </form>
-
-
     </div>
 </section>
-

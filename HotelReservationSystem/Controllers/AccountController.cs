@@ -127,6 +127,13 @@ namespace HotelReservationSystem.Controllers
             return RedirectToAction("index",controllerName:"Home");
         }
 
+
+        public IActionResult LogOut()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("index", "Home");
+        }
+
         private User GetUser()
         {
             var userId = HttpContext.Session.GetString("userId");

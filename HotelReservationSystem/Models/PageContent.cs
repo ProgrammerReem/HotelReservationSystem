@@ -5,20 +5,17 @@ namespace HotelReservationSystem.Models
     public class PageContent
     {
         public int Id { get; set; }
-        //Slider as image
-        [NotMapped]
-        public IFormFile ImageFile { get; set; }
-        public string ImagePath { get; set; }
-        //About US => string
+        public string Title { get; set; }
+        public string Text { get; set; }
         public string AboutUs { get; set; }
+        public string AboutUsTitle { get; set; }
 
-        //contact us => string
-        //? ConactUs Image
-        public string ConactUs { get; set; }
+        public string AboutUsImagePath { get; set; }
+
         [NotMapped]
-        public IFormFile ConactUsFile { get; set; }
-        public string ConactUsPath { get; set; }
-       
+
+        public IFormFile? AboutUsImageFile { get; set; }
+
 
     }
 }

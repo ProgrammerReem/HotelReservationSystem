@@ -20,7 +20,10 @@
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
         <div class="container">
+           
+            
             <a class="navbar-brand" asp-action="index" asp-controller="home"><img src="~/WebSiteLayout/assets/img/navbar-logo.svg" alt="..." /></a>
+            <a asp-action="index" asp-controller="Admin">DashBoard</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 Menu
                 <i class="fas fa-bars ms-1"></i>
@@ -32,8 +35,10 @@
                     <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
                     <li class="nav-item"><a class="nav-link" href="#team">Team</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+               
                     <li class="nav-item"><a class="nav-link" asp-action="Register" asp-controller="Account">Register</a></li>
                     <li class="nav-item"><a class="nav-link" asp-action="Login" asp-controller="Account">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-action="LogOut" asp-controller="Account">LogOut</a></li>
                 </ul>
             </div>
         </div>

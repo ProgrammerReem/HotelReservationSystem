@@ -9,10 +9,12 @@ namespace HotelReservationSystem.Controllers
     public class AdminController : Controller
     {
         private readonly ModelContext _context;
+        private readonly IWebHostEnvironment _environment;
 
-        public AdminController(ModelContext context)
+        public AdminController(ModelContext context, IWebHostEnvironment environment)
         {
             _context = context;
+            _environment = environment;
         }
 
         public IActionResult GetAllReservation()
@@ -133,11 +135,41 @@ namespace HotelReservationSystem.Controllers
             var CU = _context.contactUs.ToList();
             return View(CU);
         }
+        [HttpGet]
+        public IActionResult PageContent()
+        {
+            var model = _context.pageContent.FirstOrDefault();
+            return View(model);
+        }
+        [HttpPost]
+        public IActionResult PageContent(PageContent pageContent)
+        {
+            var dbContentPage = _context.pageContent.FirstOrDefault();
+            dbContentPage.Text = pageContent.Text;
+            dbContentPage.Title = pageContent.Title;
+            dbContentPage.AboutUsTitle = pageContent.AboutUsTitle;
+            dbContentPage.AboutUs = pageContent.AboutUs;
+            //image
+            if (pageContent.AboutUsImageFile != null)
+            {
+                dbContentPage.AboutUsImagePath = SaveImage(pageContent.AboutUsImageFile);
+            }
+            _context.Update(dbContentPage);
+            _context.SaveChanges();
+            return View();
+        }
+        
+        public IActionResult GetUsers()
+        {
+            var users = _context.users.Where(x=>x.Role=="user").ToList();
+            return View(users);
 
+        }
 
-
-
-
+        public IActionResult Index()
+        {
+            return View();
+        }
         private User GetUser()
         {
             var userId = HttpContext.Session.GetString("userId");
@@ -151,6 +183,28 @@ namespace HotelReservationSystem.Controllers
                 return null;
             }
             return user;
+        }
+
+        private string SaveImage(IFormFile file)
+        {
+            if (file == null)
+            {
+                return string.Empty;
+            }
+            string RootPath = _environment.WebRootPath;//== ~
+            if (file != null)
+            {
+                string filename = Guid.NewGuid().ToString();
+                var Upload = Path.Combine(RootPath, @"Images");
+                var ext = Path.GetExtension(file.FileName);
+
+                using (var filestream = new FileStream(Path.Combine(Upload, filename + ext), FileMode.Create))
+                {
+                    file.CopyTo(filestream);
+                }
+                return @"Images\" + filename + ext;
+            }
+            return "";
         }
 
     }
