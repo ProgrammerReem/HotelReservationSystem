@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -15,7 +16,6 @@
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
         <a class="navbar-brand ps-3" asp-action="index" asp-controller="Home">Start Bootstrap</a>
-       
         <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
         <!-- Navbar Search-->
@@ -70,14 +70,11 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             ContactUs
                         </a>
-                        <a class="nav-link" asp-controller="Admin" asp-action="PageContent">
+                        <a class="nav-link" asp-controller="Admin" asp-action="EditSite">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             PageContent
-                        </a> 
-                        <a class="nav-link" asp-controller="Admin" asp-action="GetUsers">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Users
                         </a>
+
                         <div class="sb-sidenav-menu-heading">Interface</div>
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                             <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
@@ -163,9 +160,15 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="~/AdminDashboard/js/scripts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="~/AdminDashboard/assets/demo/chart-area-demo.js"></script>
-    <script src="~/AdminDashboard/assets/demo/chart-bar-demo.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+
+    @*  <script src="~/AdminDashboard/assets/demo/chart-area-demo.js"></script>
+    <script src="~/AdminDashboard/assets/demo/chart-bar-demo.js"></script>*@
     <script src="~/AdminDashboard/js/datatables-simple-demo.js"></script>
+
+
+
+    @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>

@@ -1,4 +1,5 @@
-﻿using HotelReservationSystem.Models;
+﻿using HotelReservationSystem.DashboardVMs;
+using HotelReservationSystem.Models;
 using HotelReservationSystem.Models.Data;
 using HotelReservationSystem.ViewModel;
 using Microsoft.AspNetCore.Mvc;
@@ -166,10 +167,63 @@ namespace HotelReservationSystem.Controllers
 
         }
 
-        public IActionResult Index()
+        public IActionResult index(DateTime month)
         {
-            return View();
+
+            #region Charts
+            //room - date
+            var roomCounts = _context.room
+                           .GroupBy(r => r.CreatedAt.Date)
+                           .Select(g => new RoomCreationData
+                           {
+                               Date = g.Key,
+                               Count = g.Count()
+                           })
+                           .ToList();
+
+            // hotel - users
+            var hotelUserCounts = _context.room
+            .SelectMany(r => r.Residents, (r, u) => new { r.hotel, r.CreatedAt, u.Id })
+            .GroupBy(x => new { x.hotel.Id, x.hotel.Name, x.CreatedAt.Date })
+            .Select(g => new HotelUserData
+            {
+                HotelName = g.Key.Name,
+                Date = g.Key.Date,
+                UserCount = g.Count()
+            })
+            .ToList();
+            #endregion
+
+            #region Tables
+
+            var data = _context.residents
+               .Where(b => b.CheckIn.Month == month.Month && b.CheckIn.Year == month.Year)
+               .GroupBy(b => new { b.room.hotel.Id, b.room.hotel.Name })
+               .Select(g => new ReportDate
+               {
+                   HotelName = g.Key.Name,
+                   BenefitCount = g.Count()
+               })
+               .ToList();
+
+            #endregion
+
+
+            var model = new DashboardVM()
+            {
+                roomCreations = roomCounts,
+                hotelUser = hotelUserCounts,
+                reportDate = data
+            };
+
+            return View(model);
         }
+
+
+
+
+
+
         private User GetUser()
         {
             var userId = HttpContext.Session.GetString("userId");

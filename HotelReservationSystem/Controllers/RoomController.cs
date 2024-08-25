@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.DiaSymReader;
 using Microsoft.EntityFrameworkCore;
+using MimeKit.Text;
+using MimeKit;
 
 namespace HotelReservationSystem.Controllers
 {
@@ -14,10 +16,13 @@ namespace HotelReservationSystem.Controllers
     {
         private readonly ModelContext _context;
         private readonly IWebHostEnvironment _environment;
-        public RoomController(ModelContext context, IWebHostEnvironment environment)
+        private readonly IConfiguration _configuration;
+
+        public RoomController(ModelContext context, IWebHostEnvironment environment, IConfiguration configuration)
         {
             _context = context;
             _environment = environment;
+            _configuration = configuration;
         }
         public IActionResult Index()
         {
@@ -206,7 +211,8 @@ namespace HotelReservationSystem.Controllers
                 };
                 _context.Add(userTransaction);
                 _context.SaveChanges();
-                //ret
+                //send email
+                SendEmail(user.Email, room.roomNumber, (decimal)totalCount, user.balance);
                 return RedirectToAction("Index", "Home");
             //new onject from reser
             //save 
@@ -243,7 +249,22 @@ namespace HotelReservationSystem.Controllers
             return View(model);
         }
 
-
+        public void SendEmail(string EmailSentTo, int roomNumber, decimal price, decimal balance)
+        {
+            //google developer 
+            var email = new MimeMessage();
+           
+            email.From.Add(new MailboxAddress(_configuration["SendEmail:FromName"], _configuration["SendEmail:FromEmail"]));
+            email.To.Add(MailboxAddress.Parse(EmailSentTo));
+            email.Subject = "Room Request";
+            var htmlPage = $"<h1>Room Request in website</h1><p>Good morning .. you sucessfully send request for room number:{roomNumber} the total price is : {price}$ ,  and your current balance now is : {balance}$ </p>";
+            email.Body = new TextPart(TextFormat.Html) { Text = htmlPage };
+            using var smtp = new MailKit.Net.Smtp.SmtpClient();
+            smtp.Connect("smtp.gmail.com", 465, true);
+            smtp.Authenticate(userName: _configuration["SendEmail:FromEmail"], password: _configuration["SendEmail:Password"]);
+            smtp.Send(email);
+            smtp.Disconnect(true);
+        }
 
         private User GetUser()
         {
